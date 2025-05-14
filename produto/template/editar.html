@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Editar</title>
 </head>
 <body>
     <div class="container">
-        <h1>Cadastro de Carros</h1>
+        <h1>Edição de Carro</h1>
         <form method="POST" action="{% url 'editar_produto' carro.pk %}">
             {% csrf_token %}
             <label for="modelo">Modelo:</label>

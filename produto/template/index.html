@@ -46,6 +46,11 @@
                     Editar
                 </a>
             </button>
+            <button>
+                <a href="{% url 'deletar_produto' c.codigoCarro %}">
+                    Deletar
+                </a>
+            </button>
         {% empty %}
             <h2>Nenhum carro encontrado.</h2>
         {% endfor %}

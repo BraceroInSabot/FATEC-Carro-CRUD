@@ -1,0 +1,27 @@
+{% load %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deletar</title>
+</head>
+<body>
+    <h1>Informações</h1>
+    <p>Modelo: {{ c.modelo }}</p>
+    <p>Marca: {{ c.marca }}</p>
+    <p>Ano: {{ c.ano }}</p>
+    <p>Data de Entrada: {{ c.dataEntrada }}</p>
+    <p>Tipo de Combustivel: {{ c.combustivel }}</p>
+
+    <hr>
+    <span>Você tem certeza que quer deletar o objeto?</span>
+    <form method="POST" action="{% url 'deletar_produto' c.codigoCarro %}">
+        {% csrf_token %}
+        <button type="submit">Deletar</button>
+    </form>
+    <a href="{% url 'listar_produto' %}">
+        <button>Cancelar</button>
+    </a>
+</body>
+</html>

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, DeleteView
 from django.http import HttpResponse
 
 from .models import Carro
@@ -84,3 +84,34 @@ class EditarProdutoView(UpdateView):
             return HttpResponse(status=200, content="Carro editado com sucesso.")
         except Exception as e:
             return HttpResponse(status=400, content=f"Erro ao editar carro: {e}")
+
+
+class DeletarProdutoView(DeleteView):
+    template_name = "deletar.html"
+
+    def get_queryset(self, id: int):
+        try:
+            return Carro.objects.get(codigoCarro=id)
+        except Carro.DoesNotExist:
+            return False
+    
+    def get(self, request, *args, **kwargs):
+        codigo = kwargs.get("pk")
+        try:
+            carro = self.get_queryset(id=codigo)
+            if not carro:
+                return HttpResponse(status=404, content="Carro não encontrado.")
+            return render(request, self.template_name, {"c": carro})
+        except Carro.DoesNotExist:
+            return HttpResponse(status=404, content="Carro não encontrado.")    
+    
+    def post(self, request, *args, **kwargs):
+        codigo = kwargs.get("pk")
+        try:
+            carro = self.get_queryset(id=codigo)
+            if not carro:
+                return HttpResponse(status=404, content="Carro não encontrado.")
+            carro.delete()
+            return HttpResponse(status=200, content="Carro deletado com sucesso.")
+        except Exception as e:
+            return HttpResponse(status=400, content=f"Erro ao deletar carro: {e}")
