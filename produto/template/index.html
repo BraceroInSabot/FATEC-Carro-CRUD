@@ -11,36 +11,82 @@
         <h1>Cadastro de Carros</h1>
         <form method="POST" action="{% url 'listar_produto' %}">
             {% csrf_token %}
-            <label for="nome">Nome:</label>
-            <input type="text" name="nome" id="nome" required><br>
-
             <label for="modelo">Modelo:</label>
             <input type="text" name="modelo" id="modelo" required><br>
 
-            <label for="cor">Cor:</label>
-            <input type="text" name="cor" id="cor" required><br>
+            <label for="marca">Marca:</label>
+            <input type="text" name="marca" id="marca" required><br>
 
             <label for="ano">Ano:</label>
             <input type="number" name="ano" id="ano" required><br>
+            
+            <label for="cor">Cor:</label>
+            <input type="text" name="cor" id="cor" required><br>
 
-            <label for="preco">Preço:</label>
-            <input type="number" name="preco" id="preco" required><br>
+            <label for="dataEntrada">Data de Entrada:</label>
+            <input type="date" name="dataEntrada" id="dataEntrada" required><br>
 
-            <button type="submit">Cadastrar</button>
+            <label for="combustivel">Combustivel:</label>
+            <input type="text" name="combustivel" id="combustivel" required><br>
+
+            <button type="submit" onclick="return validarFormulario(event)">Cadastrar</button>
         </form>
     </div>
     <div class="container">
         <h1>Lista de Carros</h1>
         {% for c in carros %}
-            <h1>{{ c.nome }}</h1>
-            <p>Modelo: {{ c.modelo }}</p>
-            <p>Cor: {{ c.cor }}</p>
-            <p>Ano: {{ c.ano }}</p>
-            <p>Preço: {{ c.preco }}</p>
             <hr>
+            <p>Modelo: {{ c.modelo }}</p>
+            <p>Marca: {{ c.marca }}</p>
+            <p>Ano: {{ c.ano }}</p>
+            <p>Data de Entrada: {{ c.dataEntrada }}</p>
+            <p>Tipo de Combustivel: {{ c.combustivel }}</p>
         {% empty %}
             <h2>Nenhum carro encontrado.</h2>
         {% endfor %}
     </div>
+    <script>
+        function validarAno() {
+            const anoInput = document.getElementById('ano');
+            const ano = parseInt(anoInput.value);
+            const dataAtual = new Date();
+            const anoAtual = dataAtual.getFullYear();
+
+            if (isNaN(ano) || ano < 1886 || ano > anoAtual) {
+                alert('Ano inválido. O ano deve ser entre 1886 e o ano atual.');
+                anoInput.value = '';
+                return false;
+            }
+            return true;
+        }
+
+        function validarCombustivel() {
+            const combustivelInput = document.getElementById('combustivel');
+            const valor = combustivelInput.value.trim().toLowerCase();
+            const opcoes = [
+                "g", "gasolina",
+                "e", "etanol",
+                "d", "diesel",
+                "f", "flex",
+                "et", "elétrico",
+                "h", "híbrido"
+            ];
+
+            if (!opcoes.includes(valor)) {
+                alert('Campo inválido. O campo deve ser preenchido com uma das opções:\n("G", "Gasolina")\n("E", "Etanol")\n("D", "Diesel")\n("F", "Flex")\n("ET", "Elétrico")\n("H", "Híbrido")');
+                combustivelInput.value = '';
+                return false;
+            }
+            return true;
+        }
+
+        function validarFormulario(event) {
+            if (!validarAno() || !validarCombustivel()) {
+                event.preventDefault();
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 </html>
