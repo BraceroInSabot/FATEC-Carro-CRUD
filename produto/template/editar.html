@@ -4,51 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produto</title>
+    <title>Document</title>
 </head>
 <body>
     <div class="container">
         <h1>Cadastro de Carros</h1>
-        <form method="POST" action="{% url 'listar_produto' %}">
+        <form method="POST" action="{% url 'editar_produto' carro.pk %}">
             {% csrf_token %}
             <label for="modelo">Modelo:</label>
-            <input type="text" name="modelo" id="modelo" required><br>
+            <input type="text" name="modelo" id="modelo" value="{{ carro.modelo }}" required><br>
 
             <label for="marca">Marca:</label>
-            <input type="text" name="marca" id="marca" required><br>
+            <input type="text" name="marca" id="marca" value="{{ carro.marca }}" required><br>
 
             <label for="ano">Ano:</label>
-            <input type="number" name="ano" id="ano" required><br>
+            <input type="number" name="ano" id="ano" value="{{ carro.ano }}" required><br>
             
             <label for="cor">Cor:</label>
-            <input type="text" name="cor" id="cor" required><br>
+            <input type="text" name="cor" id="cor" value="{{ carro.cor }}" required><br>
 
             <label for="dataEntrada">Data de Entrada:</label>
-            <input type="date" name="dataEntrada" id="dataEntrada" required><br>
+            <input type="date" name="dataEntrada" id="dataEntrada" value="{{ carro.dataEntrada|date:'Y-m-d' }}" required><br>
 
             <label for="combustivel">Combustivel:</label>
-            <input type="text" name="combustivel" id="combustivel" required><br>
+            <input type="text" name="combustivel" id="combustivel" value="{{ carro.combustivel }}" required><br>
 
-            <button type="submit" onclick="return validarFormulario(event)">Cadastrar</button>
+            <button type="submit" onclick="return validarFormulario(event)">Editar</button>
         </form>
-    </div>
-    <div class="container">
-        <h1>Lista de Carros</h1>
-        {% for c in carros %}
-            <hr>
-            <p>Modelo: {{ c.modelo }}</p>
-            <p>Marca: {{ c.marca }}</p>
-            <p>Ano: {{ c.ano }}</p>
-            <p>Data de Entrada: {{ c.dataEntrada }}</p>
-            <p>Tipo de Combustivel: {{ c.combustivel }}</p>
-            <button>
-                <a href="{% url 'editar_produto' c.codigoCarro %}">
-                    Editar
-                </a>
-            </button>
-        {% empty %}
-            <h2>Nenhum carro encontrado.</h2>
-        {% endfor %}
     </div>
     <script>
         function validarAno() {
